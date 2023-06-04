@@ -57,6 +57,10 @@ Cách debug
 
 ## Chương 10: Hệ thống authentication
 
+- MVC Pattern
+- Restful API
+- Flow của authentication
+
 ## Chương : Chức năng user
 
 ## Chương : Chức năng tweet
