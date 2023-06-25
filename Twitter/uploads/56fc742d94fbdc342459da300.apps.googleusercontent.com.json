@@ -1,0 +1,11 @@
+{
+  "web": {
+    "client_id": "278498360186-ti88soadqeo7a476o890u9j0gj4c03r1.apps.googleusercontent.com",
+    "project_id": "twitter-mmo",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "redirect_uris": ["http://localhost:4000/users/oauth/google"]
+  }
+}
