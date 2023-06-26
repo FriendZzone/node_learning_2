@@ -83,3 +83,33 @@ Cách debug
 ## Chương: Docker
 
 ## Chương: Deploy EC2
+
+```js
+const generatePromise = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('ok')
+    }, delay)
+  })
+}
+
+async function main() {
+  console.time('await từng cái')
+  await generatePromise(3000)
+  await generatePromise(3000)
+  await generatePromise(3000)
+  console.timeEnd('await từng cái')
+}
+
+main()
+
+console.time('Promise.all')
+Promise.all(
+  [1, 2, 3].map(async (_) => {
+    const result = await generatePromise(3000)
+    return result
+  })
+).then((res) => {
+  console.timeEnd('Promise.all')
+})
+```
