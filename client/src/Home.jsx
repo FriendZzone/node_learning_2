@@ -42,7 +42,7 @@ export default function Home() {
       </div>
       <video controls width={500}>
         <source
-          src='http://localhost:4000/static/video-stream/c62ee3cbe9da6c3f7f7c15500.mp4'
+          src='http://localhost:4000/static/video-stream/e9d61215af15c3f435c3e1800.mp4'
           type='video/mp4'
         />
       </video>
