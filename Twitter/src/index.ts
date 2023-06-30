@@ -7,10 +7,12 @@ import staticRouter from '~/routes/static.routes'
 import usersRouter from '~/routes/users.routes'
 import databaseService from '~/services/database.services'
 import { initFolder } from '~/utils/file'
+import cors from 'cors'
 
 config()
 databaseService.connect()
 const app = express()
+app.use(cors())
 const port = process.env.PORT || 4000
 
 // Tạo folder upload
