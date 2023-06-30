@@ -113,16 +113,15 @@ ${outputPath}
 `
 
   let command = commandWithMax720
-  if (resolution.width > 720) {
+  if (resolution.height > 720) {
     command = commandWithMax1080
   }
-  if (resolution.width > 1080) {
+  if (resolution.height > 1080) {
     command = commandWithMax1440
   }
-  if (resolution.width > 1440) {
+  if (resolution.height > 1440) {
     command = commandWithOriginalWidth
   }
-
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       if (err) {
