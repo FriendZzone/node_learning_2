@@ -70,13 +70,9 @@ Cách debug
 
 ## Chương : Chức năng tweet
 
-## Chương : Streaming video
-
 ## Chương : Chức năng search
 
 ## Chương : Gửi email với Amazon SES
-
-## Chương : Đăng nhập bằng Google
 
 ## Chương: Socket.io
 

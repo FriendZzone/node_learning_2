@@ -10,7 +10,9 @@ import { initFolder } from '~/utils/file'
 import cors from 'cors'
 
 config()
-databaseService.connect()
+databaseService.connect().then(() => {
+  databaseService.indexUsers()
+})
 const app = express()
 app.use(cors())
 const port = process.env.PORT || 4000
