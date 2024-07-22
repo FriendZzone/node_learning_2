@@ -4,7 +4,7 @@ import User from '~/models/schemas/User.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 config()
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@twitter.ospfr41.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@nodejslearning.uphpdup.mongodb.net/?retryWrites=true&w=majority&appName=NodeJsLearning`
 
 class DatabaseService {
   private client: MongoClient
