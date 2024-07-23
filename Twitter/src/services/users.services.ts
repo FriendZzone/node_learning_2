@@ -47,6 +47,20 @@ class UsersService {
       }
     })
   }
+
+  private signForgotPasswordToken(user_id: string) {
+    return signToken({
+      payload: {
+        user_id,
+        token_type: TokenType.ForgotPasswordToken
+      },
+      privateKey: process.env.JWT_SECRET_FORGOT_PASSWORD_TOKEN as string,
+      options: {
+        expiresIn: process.env.FORGOT_PASSWORD_TOKEN_EXPIRES_IN
+      }
+    })
+  }
+
   private signAccessAndRefreshToken(user_id: string) {
     return Promise.all([this.signAccessToken(user_id), this.signRefreshToken(user_id)])
   }
@@ -95,8 +109,7 @@ class UsersService {
   async verifyEmail(user_id: string) {
     const [token] = await Promise.all([
       this.signAccessAndRefreshToken(user_id),
-      databaseService.users.updateOne(
-        { _id: new ObjectId(user_id) },
+      databaseService.users.updateOne({ _id: new ObjectId(user_id) }, [
         {
           $set: {
             email_verify_token: '',
@@ -104,7 +117,7 @@ class UsersService {
             updated_at: '$$NOW'
           }
         }
-      )
+      ])
     ])
     const [access_token, refresh_token] = token
     return {
@@ -114,17 +127,31 @@ class UsersService {
   }
   async resendVerifyEmail(user_id: string) {
     const verify_email_token = await this.signEmailVerifyToken(user_id)
-    await databaseService.users.updateOne(
-      { _id: new ObjectId(user_id) },
+    await databaseService.users.updateOne({ _id: new ObjectId(user_id) }, [
       {
         $set: {
           email_verify_token: verify_email_token,
           updated_at: '$$NOW'
         }
       }
-    )
+    ])
     return {
       message: USERS_MESSAGES.RESEND_VERIFY_EMAIL_SUCCESS
+    }
+  }
+
+  async forgotPassword(userId: string) {
+    const forgot_password_token = await this.signForgotPasswordToken(userId)
+    await databaseService.users.updateOne({ _id: new ObjectId(userId) }, [
+      {
+        $set: {
+          forgot_password_token,
+          updated_at: '$$NOW'
+        }
+      }
+    ])
+    return {
+      message: USERS_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD
     }
   }
 }
