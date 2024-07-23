@@ -36,7 +36,7 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   return res.json(result)
 }
 
-export const emailVerifyValidator = async (req: Request, res: Response, next: NextFunction) => {
+export const emailVerifyController = async (req: Request, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_email_verify_token as TokenPayload
   const user = await databaseService.users.findOne({
     _id: new ObjectId(user_id)
