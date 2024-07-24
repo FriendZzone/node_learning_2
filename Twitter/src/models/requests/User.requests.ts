@@ -52,4 +52,5 @@ export interface UpdateMeReqBody {
   bio?: string
   location?: string
   cover_photo?: string
+  avatar?: string
 }
