@@ -13,6 +13,7 @@ import {
   RegisterReqBody,
   ResetPasswordReqBody,
   TokenPayload,
+  UnfollowReqParams,
   VerifyEmailReqBody,
   VerifyForgotPasswordReqBody
 } from '~/models/requests/User.requests'
@@ -168,20 +169,16 @@ export const followController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const { followed_user_id } = req.body
+  const result = await usersService.follow(user_id, followed_user_id)
 
-  const exist = await databaseService.followers.findOne({
-    user_id: new ObjectId(user_id),
-    followed_user_id: new ObjectId(followed_user_id)
-  })
+  return res.json(result)
+}
 
-  if (exist) {
-    return res.json({
-      message: USERS_MESSAGES.FOLLOWED
-    })
-  }
+export const unFollowController = async (req: Request<UnfollowReqParams>, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { user_id: followed_user_id } = req.params
 
-  await usersService.follow(user_id, followed_user_id)
-  return res.json({
-    message: USERS_MESSAGES.FOLLOW_SUCCESS
-  })
+  const result = await usersService.unFollow(user_id, followed_user_id)
+
+  return res.json(result)
 }

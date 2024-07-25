@@ -10,6 +10,7 @@ import {
   registerController,
   resendVerifyEmailController,
   resetPasswordController,
+  unFollowController,
   updateMeController,
   verifyForgotPasswordController
 } from '~/controllers/users.controllers'
@@ -23,11 +24,12 @@ import {
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
+  unFollowValidator,
   updateMeValidator,
   verifiedUserValidator,
   verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middlewares'
-import { UpdateMeReqBody } from '~/models/requests/User.requests'
+import { UnfollowReqParams, UpdateMeReqBody } from '~/models/requests/User.requests'
 import { wrapRequestHandler } from '~/utils/handlers'
 const usersRouter = Router()
 
@@ -144,10 +146,10 @@ usersRouter.get('/:username', wrapRequestHandler(getProfileController))
 
 /**
  * Description. Follow user
- * Path: /:username
+ * Path: /follow
  * Method: POST
  * Header: { Authorization: Bearer <access_token> }
- * Body: { user_id: string }
+ * Body: { followed_user_id: string }
  */
 usersRouter.post(
   '/follow',
@@ -155,6 +157,20 @@ usersRouter.post(
   verifiedUserValidator,
   followValidator,
   wrapRequestHandler(followController)
+)
+
+/**
+ * Description. Un follow user
+ * Path: /follow/:user_id
+ * Method: DELETE
+ * Header: { Authorization: Bearer <access_token> }
+ */
+usersRouter.delete(
+  '/follow/:user_id',
+  accessTokenValidator,
+  verifiedUserValidator,
+  unFollowValidator,
+  wrapRequestHandler(unFollowController)
 )
 
 export default usersRouter
