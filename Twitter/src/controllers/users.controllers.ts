@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { pick } from 'lodash'
 import { ObjectId } from 'mongodb'
 import { UserVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import {
+  FollowReqBody,
   ForgotPasswordReqBody,
+  GetProfileReqParams,
   LoginReqBody,
   LogoutReqBody,
   RegisterReqBody,
@@ -148,5 +149,39 @@ export const updateMeController = async (req: Request, res: Response, next: Next
   return res.json({
     message: USERS_MESSAGES.UPDATE_ME_SUCCESS,
     result
+  })
+}
+
+export const getProfileController = async (req: Request<GetProfileReqParams>, res: Response, next: NextFunction) => {
+  const { username } = req.params
+  const result = await usersService.getProfile(username)
+  return res.json({
+    message: USERS_MESSAGES.GET_PROFILE_SUCCESS,
+    result
+  })
+}
+
+export const followController = async (
+  req: Request<ParamsDictionary, any, FollowReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { followed_user_id } = req.body
+
+  const exist = await databaseService.followers.findOne({
+    user_id: new ObjectId(user_id),
+    followed_user_id: new ObjectId(followed_user_id)
+  })
+
+  if (exist) {
+    return res.json({
+      message: USERS_MESSAGES.FOLLOWED
+    })
+  }
+
+  await usersService.follow(user_id, followed_user_id)
+  return res.json({
+    message: USERS_MESSAGES.FOLLOW_SUCCESS
   })
 }

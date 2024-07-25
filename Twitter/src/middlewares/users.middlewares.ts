@@ -406,6 +406,7 @@ export const verifiedUserValidator = (req: Request, res: Response, next: NextFun
   }
   next()
 }
+
 export const updateMeValidator = validate(
   checkSchema(
     {
@@ -477,6 +478,39 @@ export const updateMeValidator = validate(
       },
       avatar: imageSchema,
       cover_photo: imageSchema
+    },
+    ['body']
+  )
+)
+
+export const followValidator = validate(
+  checkSchema(
+    {
+      followed_user_id: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.FOLLOWED_USER_ID_IS_REQUIRED
+        },
+        custom: {
+          options: async (value: string, { req }) => {
+            if (!ObjectId.isValid(value)) {
+              throw new ErrorWithStatus({
+                message: USERS_MESSAGES.INVALID_FOLLOWED_USER_ID,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+            const followedUser = await databaseService.users.findOne({
+              _id: new ObjectId(value)
+            })
+
+            if (followedUser === null) {
+              throw new ErrorWithStatus({
+                message: USERS_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+          }
+        }
+      }
     },
     ['body']
   )
