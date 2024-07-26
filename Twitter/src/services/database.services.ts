@@ -6,7 +6,7 @@ import Follower from '~/models/schemas/Follower.schema'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
 config()
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@twitter.ospfr41.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@nodejslearning.uphpdup.mongodb.net/?retryWrites=true&w=majority&appName=NodeJsLearning`
 
 class DatabaseService {
   private client: MongoClient
