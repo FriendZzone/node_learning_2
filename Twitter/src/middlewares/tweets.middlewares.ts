@@ -26,7 +26,7 @@ export const createTweetValidator = validate(
     parent_id: {
       custom: {
         options: (value, { req }) => {
-          const type = req.body.type as TweetType
+          const type = Number(req.body.type) as TweetType
           // Nếu `type` là retweet, comment, quotetweet thì `parent_id` phải là `tweet_id` của tweet cha
           if ([TweetType.Retweet, TweetType.Comment, TweetType.QuoteTweet].includes(type) && !ObjectId.isValid(value)) {
             throw new Error(TWEETS_MESSAGES.PARENT_ID_MUST_BE_A_VALID_TWEET_ID)
