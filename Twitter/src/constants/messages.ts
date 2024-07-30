@@ -79,5 +79,6 @@ export const TWEETS_MESSAGES = {
 
 export const BOOKMARK_MESSAGES = {
   TWEET_NOT_FOUND: 'Tweet not found',
-  BOOKMARK_SUCCESSFULLY: 'Bookmark successfully'
+  BOOKMARK_SUCCESSFULLY: 'Bookmark successfully',
+  UNBOOKMARK_SUCCESSFULLY: 'Unbookmark successfully'
 } as const
