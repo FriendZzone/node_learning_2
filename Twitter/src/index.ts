@@ -9,6 +9,7 @@ import usersRouter from '~/routes/users.routes'
 import databaseService from '~/services/database.services'
 import { initFolder } from '~/utils/file'
 import tweetsRouter from './routes/tweets.routes'
+import bookmarksRouter from './routes/bookmarks.routes'
 
 config()
 databaseService.connect().then(() => {
@@ -28,6 +29,7 @@ app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
 app.use('/static', staticRouter)
 app.use('/tweets', tweetsRouter)
+app.use('/bookmarks', bookmarksRouter)
 app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 
 app.use(defaultErrorHandler)
