@@ -76,7 +76,8 @@ export const TWEETS_MESSAGES = {
   MENTIONS_MUST_BE_AN_ARRAY_OF_USER_ID: 'Mentions must be an array of user id',
   MEDIAS_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT: 'Medias must be an array of media object',
   INVALID_TWEET_ID: 'Invalid tweet id',
-  TWEET_NOT_FOUND: 'Tweet not found'
+  TWEET_NOT_FOUND: 'Tweet not found',
+  TWEET_IS_NOT_PUBLIC: 'Tweet is not public'
 } as const
 
 export const BOOKMARK_MESSAGES = {
@@ -87,5 +88,6 @@ export const BOOKMARK_MESSAGES = {
 
 export const LIKE_MESSAGES = {
   LIKE_SUCCESSFULLY: 'Like successfully',
-  UNLIKE_SUCCESSFULLY: 'Unlike successfully'
+  UNLIKE_SUCCESSFULLY: 'Unlike successfully',
+  TWEET_IS_NOT_PUBLIC: 'Tweet is not public'
 } as const

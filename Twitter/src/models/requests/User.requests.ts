@@ -1,6 +1,7 @@
 import { JwtPayload } from 'jsonwebtoken'
 import { TokenType, UserVerifyStatus } from '~/constants/enums'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { ObjectId } from 'mongodb'
 export interface UpdateMeReqBody {
   name?: string
   date_of_birth?: string
@@ -10,7 +11,14 @@ export interface UpdateMeReqBody {
   username?: string
   avatar?: string
   cover_photo?: string
+  twitter_circle?: string[]
 }
+
+export interface UpdateMePayload extends Omit<UpdateMeReqBody, 'twitter_circle' | 'date_of_birth'> {
+  twitter_circle?: string[] | ObjectId[]
+  date_of_birth?: string | Date
+}
+
 export interface ChangePasswordReqBody {
   old_password: string
   password: string

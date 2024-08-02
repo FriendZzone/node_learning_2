@@ -4,7 +4,7 @@ import { TokenType, UserVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Errors'
-import { RegisterReqBody, UpdateMeReqBody } from '~/models/requests/User.requests'
+import { RegisterReqBody, UpdateMePayload, UpdateMeReqBody } from '~/models/requests/User.requests'
 import Follower from '~/models/schemas/Follower.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
@@ -379,14 +379,19 @@ class UsersService {
   }
 
   async updateMe(user_id: string, payload: UpdateMeReqBody) {
-    const _payload = payload.date_of_birth ? { ...payload, date_of_birth: new Date(payload.date_of_birth) } : payload
+    const _payload: UpdateMePayload = {
+      ...payload
+    }
+    if (_payload.date_of_birth) _payload.date_of_birth = new Date(_payload.date_of_birth)
+    if (_payload.twitter_circle) _payload.twitter_circle = _payload.twitter_circle.map((id) => new ObjectId(id))
+
     const user = await databaseService.users.findOneAndUpdate(
       {
         _id: new ObjectId(user_id)
       },
       {
         $set: {
-          ...(_payload as UpdateMeReqBody & { date_of_birth?: Date })
+          ...(_payload as UpdateMeReqBody & { date_of_birth?: Date; twitter_circle?: ObjectId[] })
         },
         $currentDate: {
           updated_at: true
