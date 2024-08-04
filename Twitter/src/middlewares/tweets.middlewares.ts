@@ -131,7 +131,7 @@ export const tweetIdValidator = validate(
               .aggregate<Tweet>([
                 {
                   $match: {
-                    _id: new ObjectId('66a860a4465bfba20db40215')
+                    _id: new ObjectId(value)
                   }
                 },
                 {
