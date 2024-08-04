@@ -29,7 +29,8 @@ export const getTweetController = async (req: Request<GetTweetReqParams>, res: R
   const tweetWithViews = {
     ...tweet,
     user_views: result.user_views,
-    guest_views: result.guest_views
+    guest_views: result.guest_views,
+    updated_at: result.updated_at
   }
 
   return res.json({
@@ -44,6 +45,7 @@ export const getTweetChildrenController = async (
   next: NextFunction
 ) => {
   const { tweet_id } = req.params
+  const { user_id } = req.decoded_authorization as TokenPayload
   const tweet_type = Number(req.query.tweet_type as string) as TweetType
   const limit = Number(req.query.limit as string)
   const page = Number(req.query.page as string)
@@ -52,7 +54,8 @@ export const getTweetChildrenController = async (
     tweet_id,
     tweet_type,
     page,
-    limit
+    limit,
+    user_id
   })
 
   return res.json({
