@@ -1,6 +1,7 @@
 import { ParamsDictionary } from 'express-serve-static-core'
 import { TweetAudience, TweetType } from '~/constants/enums'
 import { Media } from '../Orther'
+import * as core from 'express-serve-static-core'
 
 export interface TweetRequestBody {
   type: TweetType
