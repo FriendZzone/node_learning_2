@@ -16,6 +16,7 @@
     "prettier:fix": "prettier --write ."
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/formidable": "^2.0.6",
