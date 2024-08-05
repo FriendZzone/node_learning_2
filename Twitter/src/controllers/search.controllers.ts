@@ -10,14 +10,17 @@ export const searchController = async (
   next: NextFunction
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
-  const { content, page, limit } = req.query
+  const { content, page, limit, media_type, people_follow } = req.query
 
   const result = await searchService.search({
     content,
     page: Number(page),
     limit: Number(limit),
+    media_type,
+    people_follow: Boolean(people_follow),
     user_id
   })
+
   return res.json({
     message: 'Search successfully',
     result
