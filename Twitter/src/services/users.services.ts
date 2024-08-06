@@ -12,6 +12,7 @@ import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { signToken, verifyToken } from '~/utils/jwt'
 import axios from 'axios'
+import { sendVerifyEmail } from '~/utils/email'
 config()
 
 class UsersService {
@@ -111,7 +112,17 @@ class UsersService {
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat, exp })
     )
-    console.log('email_verify_token: ', email_verify_token)
+
+    // send verify email
+    sendVerifyEmail(
+      payload.email,
+      'Verify your email',
+      `
+      <h1>Verify your email</h1>
+      <p>Click <a href="${process.env.CLIENT_URL}/verify-email?token=${email_verify_token}">here</a> to verify your email</p>
+   `
+    )
+
     return {
       access_token,
       refresh_token

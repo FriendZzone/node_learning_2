@@ -39,6 +39,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.624.0",
     "axios": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.1.3",
