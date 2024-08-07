@@ -15,23 +15,32 @@ const s3 = new S3({
 })
 
 // s3.listBuckets({}).then((data) => console.log(data))
+export const uploadFileToS3 = async ({
+  fileName,
+  filePath = 'image/jpeg',
+  contentType
+}: {
+  fileName: string
+  filePath: string
+  contentType?: string
+}) => {
+  const file = readFileSync(path.resolve(filePath))
 
-const file = readFileSync(path.resolve('uploads/images/Instagram_icon.png.webp'))
+  const parallelUploads3 = new Upload({
+    client: s3,
+    params: {
+      Bucket: process.env.AWS_BUCKET_NAME as string,
+      Key: fileName,
+      Body: file,
+      ContentType: contentType
+    }
+  })
 
-const parallelUploads3 = new Upload({
-  client: s3,
-  params: {
-    Bucket: process.env.AWS_BUCKET_NAME as string,
-    Key: `image_${new Date().getTime()}.webp`,
-    Body: file,
-    ContentType: 'image/jpeg'
-  }
-})
+  parallelUploads3.on('httpUploadProgress', (progress) => {
+    console.log(progress)
+  })
 
-parallelUploads3.on('httpUploadProgress', (progress) => {
-  console.log(progress)
-})
+  const result = await parallelUploads3.done()
 
-parallelUploads3.done().then((res) => {
-  console.log('done', res)
-})
+  return result
+}

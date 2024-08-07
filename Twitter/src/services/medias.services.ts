@@ -1,17 +1,18 @@
-import { Request } from 'express'
-import { getNameFromFullname, handleUploadImage, handleUploadVideo } from '~/utils/file'
-import sharp from 'sharp'
-import { UPLOAD_IMAGE_DIR } from '~/constants/dir'
-import path from 'path'
-import fs from 'fs'
-import fsPromise from 'fs/promises'
-import { isProduction } from '~/constants/config'
 import { config } from 'dotenv'
+import { Request } from 'express'
+import fsPromise from 'fs/promises'
+import mime from 'mime'
+import path from 'path'
+import sharp from 'sharp'
+import { isProduction } from '~/constants/config'
+import { UPLOAD_IMAGE_DIR } from '~/constants/dir'
 import { EncodingStatus, MediaType } from '~/constants/enums'
 import { Media } from '~/models/Orther'
-import { encodeHLSWithMultipleVideoStreams } from '~/utils/video'
-import databaseService from '~/services/database.services'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
+import databaseService from '~/services/database.services'
+import { getNameFromFullname, handleUploadImage, handleUploadVideo } from '~/utils/file'
+import { uploadFileToS3 } from '~/utils/s3'
+import { encodeHLSWithMultipleVideoStreams } from '~/utils/video'
 
 config()
 
@@ -108,13 +109,19 @@ class MediasService {
     const result: Media[] = await Promise.all(
       files.map(async (file) => {
         const newName = getNameFromFullname(file.newFilename)
+        const newFullFileName = `${newName}.jpg`
         const newPath = path.resolve(UPLOAD_IMAGE_DIR, `${newName}.jpg`)
         await sharp(file.filepath).jpeg().toFile(newPath)
-        fs.unlinkSync(file.filepath)
+        const s3result = await uploadFileToS3({
+          fileName: newFullFileName,
+          filePath: newPath,
+          contentType: mime.getType(newPath) as string
+        })
+
+        Promise.all([fsPromise.unlink(file.filepath), fsPromise.unlink(newPath)])
+
         return {
-          url: isProduction
-            ? `${process.env.HOST}/static/image/${newName}.jpg`
-            : `http://localhost:${process.env.PORT}/static/image/${newName}.jpg`,
+          url: s3result.Location as string,
           type: MediaType.Image
         }
       })
