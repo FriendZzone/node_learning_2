@@ -113,7 +113,7 @@ class MediasService {
         const newPath = path.resolve(UPLOAD_IMAGE_DIR, `${newName}.jpg`)
         await sharp(file.filepath).jpeg().toFile(newPath)
         const s3result = await uploadFileToS3({
-          fileName: newFullFileName,
+          fileName: 'images/' + newFullFileName,
           filePath: newPath,
           contentType: mime.getType(newPath) as string
         })
@@ -130,14 +130,23 @@ class MediasService {
   }
   async uploadVideo(req: Request) {
     const files = await handleUploadVideo(req)
-    const result: Media[] = files.map((file) => {
-      return {
-        url: isProduction
-          ? `${process.env.HOST}/static/video/${file.newFilename}`
-          : `http://localhost:${process.env.PORT}/static/video/${file.newFilename}`,
-        type: MediaType.Video
-      }
-    })
+    const result: Media[] = await Promise.all(
+      files.map(async (file) => {
+        const s3result = await uploadFileToS3({
+          fileName: 'videos/' + files[0].newFilename,
+          filePath: file.filepath,
+          contentType: mime.getType(file.filepath) as string
+        })
+
+        fsPromise.unlink(file.filepath)
+
+        return {
+          url: s3result.Location as string,
+          type: MediaType.Video
+        }
+      })
+    )
+
     return result
   }
   async uploadVideoHLS(req: Request) {
