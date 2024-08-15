@@ -1,21 +1,22 @@
 import { Router } from 'express'
 import {
-  verifyEmailController,
+  changePasswordController,
+  followController,
+  forgotPasswordController,
+  getForMeController,
+  getMeController,
+  getProfileController,
   loginController,
   logoutController,
+  oauthController,
+  refreshTokenController,
   registerController,
   resendVerifyEmailController,
-  forgotPasswordController,
-  verifyForgotPasswordController,
   resetPasswordController,
-  getMeController,
-  updateMeController,
-  getProfileController,
-  followController,
   unfollowController,
-  changePasswordController,
-  oauthController,
-  refreshTokenController
+  updateMeController,
+  verifyEmailController,
+  verifyForgotPasswordController
 } from '~/controllers/users.controllers'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
 import {
@@ -207,5 +208,12 @@ usersRouter.put(
   changePasswordValidator,
   wrapRequestHandler(changePasswordController)
 )
+
+/**
+ * Description: For me
+ * Path: /me/for-me
+ * Method: GET
+ */
+usersRouter.get('/me/for-me', wrapRequestHandler(getForMeController))
 
 export default usersRouter

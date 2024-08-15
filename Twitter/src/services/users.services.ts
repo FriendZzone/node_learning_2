@@ -1,6 +1,6 @@
 import { config } from 'dotenv'
 import { ObjectId } from 'mongodb'
-import { TokenType, UserVerifyStatus } from '~/constants/enums'
+import { TokenType, TweetAudience, TweetType, UserVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Errors'
@@ -472,6 +472,35 @@ class UsersService {
     )
     return {
       message: USERS_MESSAGES.CHANGE_PASSWORD_SUCCESS
+    }
+  }
+
+  async getForMe() {
+    const randomUsers = await databaseService.users
+      .aggregate([
+        { $match: { verify: UserVerifyStatus.Verified } },
+        {
+          $sample: {
+            size: 10
+          }
+        }
+      ])
+      .toArray()
+
+    const randomTweets = await databaseService.tweets
+      .aggregate([
+        { $match: { type: TweetType.Tweet, audience: TweetAudience.Everyone } },
+        {
+          $sample: {
+            size: 10
+          }
+        }
+      ])
+      .toArray()
+
+    return {
+      randomUsers,
+      randomTweets
     }
   }
 }

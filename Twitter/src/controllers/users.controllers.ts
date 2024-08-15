@@ -212,3 +212,8 @@ export const changePasswordController = async (
   const result = await usersService.changePassword(user_id, password)
   return res.json(result)
 }
+
+export const getForMeController = async (req: Request, res: Response, next: NextFunction) => {
+  const result = await usersService.getForMe()
+  return res.json(result)
+}
