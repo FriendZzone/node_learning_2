@@ -94,3 +94,17 @@ export const sendForgotPasswordEmail = (toAddresses: string, forgot_password_tok
       .replace('{{link}}', `${process.env.CLIENT_URL}/reset-password?token=${forgot_password_token}`)
   )
 }
+
+export const sendEmail = (toAddresses: string, subject: string, body: string) => {
+  const sendEmailCommand = createSendEmailCommand({
+    fromAddress: process.env.SES_FROM_ADDRESS as string,
+    toAddresses: toAddresses,
+    body,
+    subject
+  })
+  try {
+    return sesClient.send(sendEmailCommand)
+  } catch (error) {
+    console.log('Send email error', error)
+  }
+}
