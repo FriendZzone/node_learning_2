@@ -18,7 +18,6 @@ class SearchService {
     media_type?: MediaTypeQuery
     people_follow?: boolean
   }) {
-    console.log(content)
 
     const $match: any = {
       $text: {

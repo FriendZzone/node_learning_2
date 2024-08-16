@@ -25,8 +25,6 @@ class LikeService {
   }
 
   async unlikeTweet(tweet_id: string, user_id: string) {
-    console.log({ tweet_id, user_id })
-
     const result = await databaseService.likes.deleteOne({
       tweet_id: new ObjectId(tweet_id),
       user_id: new ObjectId(user_id)
