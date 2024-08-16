@@ -34,7 +34,8 @@ class NotificationService {
               _id: 1,
               tweet_id: 1,
               tweetUser: {
-                email: 1 // Get the email from the joined user
+                email: 1, // Get the email from the joined user
+                name: 1
                 // ... other fields you need from the user
               }
             }

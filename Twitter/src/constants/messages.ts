@@ -83,11 +83,13 @@ export const TWEETS_MESSAGES = {
 export const BOOKMARK_MESSAGES = {
   TWEET_NOT_FOUND: 'Tweet not found',
   BOOKMARK_SUCCESSFULLY: 'Bookmark successfully',
-  UNBOOKMARK_SUCCESSFULLY: 'Unbookmark successfully'
+  UNBOOKMARK_SUCCESSFULLY: 'Unbookmark successfully',
+  GET_BOOKMARKED_TWEETS_SUCCESSFULLY: 'Get bookmarked tweets successfully'
 } as const
 
 export const LIKE_MESSAGES = {
   LIKE_SUCCESSFULLY: 'Like successfully',
   UNLIKE_SUCCESSFULLY: 'Unlike successfully',
-  TWEET_IS_NOT_PUBLIC: 'Tweet is not public'
+  TWEET_IS_NOT_PUBLIC: 'Tweet is not public',
+  GET_LIKED_TWEETS_SUCCESSFULLY: 'Get liked tweets successfully'
 } as const

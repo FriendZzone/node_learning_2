@@ -32,3 +32,13 @@ export const unlikeTweetController = async (req: Request<UnlikeTweetReqParams>, 
     message: LIKE_MESSAGES.UNLIKE_SUCCESSFULLY
   })
 }
+
+export const likedTweetsController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const result = await likeService.getLikedTweets(user_id)
+
+  return res.json({
+    message: LIKE_MESSAGES.GET_LIKED_TWEETS_SUCCESSFULLY,
+    result
+  })
+}
